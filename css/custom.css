@@ -1,0 +1,52 @@
+.rightImage {
+    float: right;
+}
+
+.leftImage {
+    float: left;
+}
+
+.ftable, .fth, .ftd {
+    border: 5px solid;
+    border-radius: 25px;
+    background: green;
+    padding: 15px;
+}
+
+p {
+    text-align: left;
+}
+.handsOn {
+    background-color:#e6e6fa;
+}
+.rotatingImage {
+    margin: -60px 0 0 -60px;
+    -webkit-animation-fill-mode: forwards;
+    -moz-animation: spin 40s linear infinite;
+    animation: spin 40s linear infinite;
+    transform: rotate(-45deg);
+}
+
+@-moz-keyframes spin {
+    100% {
+        -moz-transform: rotate(45deg);
+    }
+}
+
+@-webkit-keyframes spin {
+    100% { -webkit-transform: rotate(45deg) }
+}
+
+@-webkit-keyframes CW {
+    100% { -webkit-transform: rotate(45deg) }
+}
+@-webkit-keyframes CCW {
+    100% { -webkit-transform: rotate(0deg) }
+}
+
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+}

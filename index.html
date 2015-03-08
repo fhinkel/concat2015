@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <title>Mobile web apps with ‘native app’ features</title><!-- FIXME -->
+
+    <meta name="description" content="Mobile web apps with ‘native app’ features">
+    <!-- FIXME -->
+    <meta name="author" content="Franziska Hinkelmann">
+    <!-- FIXME -->
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/tng.css" id="theme">
+    <link rel="stylesheet" href="css/custom.css">
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/github.css">
+
+    <script data-main="js/main" src="js/vendor/require.js"></script>
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+        if (window.location.search.match(/print-pdf/gi)) {
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = 'css/print/pdf.css';
+            document.getElementsByTagName('head')[0].appendChild(link);
+        }
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<!--
+  Was machen die extra CSS Klassen?
+  charred: charred-trail Plugin aktivieren,
+  auto-fragment: alle <li> innerhalb von <ul> und <ol> in Fragments umwandeln, d.h. bei Tastendruck erst einblenden
+-->
+<body class="charred auto-fragment">
+
+<div class="i18n">
+    <!-- FIXME: hier wenn gewünscht die Überschrift der Abschnitts-Übersichtseite ändern -->
+    <span class="section-overview">Übersicht</span>
+</div>
+
+<!-- Titel-Slide -->
+<section>
+    <h2>Mobile Web Apps with <p></p><i>Native App</i> Features</h2>
+
+
+    <p style="padding-top:15%; text-align:center;">
+        <a href="mailto:franziska.hinkelmann@tngtech.com">Franziska Hinkelmann</a>
+
+    <h3>.concat()</h3>
+    Salzburg, 2015-03-07
+    </p>
+    <a href="http://www.tngtech.com"><img class="logo" src="img/tng.svg"></a>
+</section>
+
+<section data-markdown >
+    <script type="text/template">
+        ## Features
+        * Offline data storage
+        * Background sync
+        * Push notifications
+        * Accelerometer and gyroscope data
+    </script>
+</section>
+
+
+<section data-title="Motivation">
+    <h2>Native Apps vs. Web Apps</h2>
+    <br>
+
+    <div class="leftImage">
+        <p><b>Native</b></p>
+        <ul class="no-burn">
+            <li>Device specific: built to the <br>
+                strength of the platform</li>
+        </ul>
+
+    </div>
+    <div class="rightImage">
+        <p><b>Web</b></p>
+        <ul class="no-burn">
+            <li>Platform independent</li>
+            <li>No AppStore</li>
+            <li>No installation required by user</li>
+            <li>Same programming languages <br>
+                as web development</li>
+        </ul>
+
+    </div>
+</section>
+
+<section>
+    <img src="img/M21.png">
+</section>
+<section>
+    <img src="img/M22.png">
+</section>
+<section>
+    <img src="img/M23.png">
+</section>
+
+<section data-markdown >
+    <script type="text/template">
+        ## Features
+        * Offline data storage
+        * Background sync
+        * Push notifications
+        * Accelerometer and gyroscope data
+    </script>
+</section>
+
+<section>
+    <h3>Accelerometer and Gyroscope</h3>
+
+    <div>
+
+        <ul class="no-burn">
+            <li>Shake gesture</li>
+            <li>In games</li>
+            <li>For health and fitness apps</li>
+            <li>Combined with GeoLocation
+                for turn by <br>turn navigation
+            </li>
+        </ul>
+    </div>
+
+    <br>
+    <img style="height: 250px" src="img/labyrinth.png">
+    <img style="height: 250px" src="img/tilt.png">
+    <img style="height: 250px" src="img/pedo.png">
+</section>
+
+
+<section>
+    <p>
+        Easy with <b>DeviceOrientationEvent</b> and <b>DeviceMotionEvent</b>
+        <br>
+        <br>
+
+    </p>
+<pre><code class="javascript">if (window.DeviceOrientationEvent) {
+    window.addEventListener('deviceorientation', function(eventData) {
+        ...
+    });
+)
+if ((window.DeviceMotionEvent) {
+    window.addEventListener('devicemotion', function(eventData) {
+        ...
+    });
+)</code></pre>
+    <p>Supported in current versions of iOS Safari, Chrome, Firefox, IE11.</p>
+</section>
+
+<section data-title="DeviceOrientation">
+    <h2>DeviceOrientation</h2>
+
+    <p>The device orientation event returns the rotation data as Euler Angles.</p>
+
+    <div class="rightImage no-burn">
+        <p>
+            Rotation
+        </p>
+        <ul class="no-burn">
+            <li>around z-axis <b>alpha</b></li>
+            <li>around x-axis <b>beta</b></li>
+            <li>around y-axis <b>gamma</b></li>
+        </ul>
+    </div>
+
+    <div class="leftImage">
+        <img src="img/device_axes.png">
+    </div>
+
+</section>
+
+<section>
+    <h2>DeviceOrientation</h2>
+    <h4>Euler Angles</h4>
+
+    <div class="rightImage no-burn">
+        <ul class="no-burn">
+            <li><b>alpha</b> the direction the device is<p></p> facing according to the compass</li>
+            <li><b>beta</b> is the front-to-back tilt</li>
+            <li><b>gamma</b> is the left-to-right tilt</li>
+        </ul>
+    </div>
+
+    <div class="leftImage">
+        <img src="img/rotation.png">
+    </div>
+
+</section>
+
+
+<section>
+<pre style="font-size:0.7em"><code class="javascript" data-noescape>
+window.addEventListener('^1^deviceorientation^^', function(eventData) {
+    var direction = eventData.^2^alpha^^;
+    var tiltFB = eventData.^3^beta^^;
+    var tiltLR = eventData.^4^gamma^^;
+
+    doSomethingWith(direction, tiltFB, tiltLR);
+}); </code></pre>
+</section>
+
+<section data-title="DeviceMotion">
+    <h2>Device Motion</h2>
+
+    <p>The DeviceMotionEvent provides the acceleration (in m/s^2)
+        and rotation rate (in d/s) data of the device.
+    </p>
+
+    <div class="leftImage">
+        <img src="img/device_axes.png">
+    </div>
+
+    <div class="rightImage">
+        <p>Acceleration in {x,y,z} direction of phone
+        </p>
+        <ul class="no-burn" style="text-align:left;">
+            <li>
+                Not accelerating: {0, 0, 0}
+            </li>
+            <li>
+                Accelerating forward: {0, 3, 0}
+            </li>
+        </ul>
+        <br>
+        <br>
+        <p></p>
+        <p>Acceleration including gravity
+        </p>
+        <ul class="no-burn" style="text-align:left">
+            <li>
+                Not accelerating : {0, 0, 9.81}
+            </li>
+            <li>
+                Accelerating forward: {0, 3, 9.81}
+            </li>
+        </ul>
+    </div>
+
+</section>
+
+<section>
+    <h3>
+        Phone rotated 90 ° around the x-axis
+    </h3>
+
+    <div class="leftImage">
+        <img src="img/acceleration_axes.png" style="height: 500px">
+    </div>
+
+    <div class="rightImage">
+        <p><br></p>
+
+        <p>Acceleration in {x,y,z} direction of phone
+        </p>
+        <ul class="no-burn" style="text-align:left;">
+            <li>
+                Not accelerating: {0, 0, 0}
+            </li>
+            <li>
+                Accelerating forward: {0, 0, 3}
+            </li>
+        </ul>
+        <br>
+        <br>
+        <p></p>
+        <p>Acceleration including gravity
+        </p>
+        <ul class="no-burn" style="text-align:left">
+            <li>
+                Not accelerating : {0, 9.81, 0}
+            </li>
+            <li>
+                Accelerating forward: {0, 9.81, 3}
+            </li>
+        </ul>
+    </div>
+</section>
+
+
+<section>
+<pre style="font-size:.7em"><code class="javascript" data-noescape="">
+window.addEventListener('^1^devicemotion^^', function(eventData) {
+    var acceleration = eventData.^2^acceleration^^;
+    doSomethingWithAcceleration(acceleration.^3^x^^,
+    acceleration.^4^y^^,
+    acceleration.^5^z^^);
+
+    var accelerationIncludingGravity =
+    eventData.^6^accelerationIncludingGravity^^;
+    var rotation = eventData.^7^rotationRate^^;
+    ...
+}, false); </code></pre>
+</section>
+
+<section data-title="Try it yourself">
+    <h2>Try it now: <a href="http://bit.ly/concat2015">http://bit.ly/concat2015</a></h2>
+<pre><code class="javascript">window.addEventListener('deviceorientation', function (eventData) {
+    document.getElementById("doTiltLR").innerHTML = Math.round(eventData.gamma);
+    document.getElementById("doTiltFB").innerHTML = Math.round(eventData.beta);
+    document.getElementById("doDirection").innerHTML = Math.round(eventData.alpha);
+});
+
+window.addEventListener('devicemotion', function (eventData) {
+    document.getElementById("dmAcceleration").innerHTML = "[" +
+    Math.round(eventData.acceleration.x) + ", " +
+    Math.round(eventData.acceleration.y) + ", " +
+    Math.round(eventData.acceleration.z) + "]";
+
+    document.getElementById("dmAccelerationIncludingGravity").innerHTML = "[" +
+    Math.round(eventData.accelerationIncludingGravity.x) + ", " +
+    Math.round(eventData.accelerationIncludingGravity.y) + ", " +
+    Math.round(eventData.accelerationIncludingGravity.z) + "]";
+
+    document.getElementById("dmRotationRate").innerHTML = "[" +
+    Math.round(eventData.rotationRate.alpha) + ", " +
+    Math.round(eventData.rotationRate.beta) + ", " +
+    Math.round(eventData.rotationRate.gamma) + "]";
+
+    document.getElementById("dmInterval").innerHTML = eventData.interval;
+});</code></pre>
+</section>
+
+<section class="handsOn">
+    <h4>Try it now: <a href="http://bit.ly/concat2015">http://bit.ly/concat2015</a></h4>
+    <video height="700" controls autoplay>
+        <source src="img/MotionDevicecopy.m4v" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</section>
+
+<section>
+    <h2>Drawbacks</h2>
+
+    <p>
+    <ul class="no-burn fragment">
+        <li>Differences between devices:<br>
+            <ul class="no-burn fragment">
+                <li class="no-burn fragment">
+                    In Mobile iOS, alpha = 0 is the initial direction, not north, instead
+                    use <i>webkitCompassHeading</i>.
+<pre><code class="javascript">var alpha;
+if(event.webkitCompassHeading) {
+    alpha = event.webkitCompassHeading;
+} </code></pre>
+                </li>
+                <li class="fragment no-burn">
+                    <img src="img/alphaDifferences.png" align="middle">
+                </li>
+                <li class="no-burn fragment">Axis for acceleration in opposite direction on iPhone</li>
+            </ul>
+        <li class="fragment">
+            <p>Native app: motion event update interval can be set
+                (improved battery life).
+        </li>
+    </ul>
+
+</section>
+
+<section>
+    <p>Wrap acceleration code in a class that has device detection</p>
+    <div class="fragment">Because axes matter!<br><br>
+    <br>
+
+    <div class="rotatingImage">
+        <img src="img/duck.png" style="width:400px;">
+    </div>
+        <br>
+        <br>
+        Rabbit or Duck?
+    </div>
+</section>
+
+<section data-markdown >
+    <script type="text/template">
+        ## Service Worker
+        * Programmatically caching responses
+        * Push messaging
+        * Background syncing
+    </script>
+</section>
+
+<section>
+    <h2>Better experience with no or slow network connection</h2>
+
+    <img style="height: 250px" src="img/email-icon.jpeg">
+    <img style="height: 250px" src="img/Twitter-icon.png">
+    <img style="height: 250px" src="img/fotos-icon.png">
+</section>
+
+<section data-markdown >
+    <script type="text/template">
+        ## Service Worker
+        * JavaScript Worker run by your browser in the background
+        * Lifecycle which is separate from your web page
+        * Cannot access the DOM directly
+        * HTTPS is needed!
+        * Chrome, Opera or Firefox Nightly
+    </script>
+</section>
+
+
+<section >
+    <h3>Register a service worker</h3>
+    <p>To install a service worker for your site, you need to
+        register for a service worker</p>
+    <p>In the page</p>
+    <pre><code class="javascript" data-noescape="">navigator.^^serviceWorker.register^^('worker.js').then(function(registration) {
+    console.log("Registered!");
+}).catch(function(err) {
+    console.log("Error", err);
+}); </code> </pre>
+
+    <p>In worker.js</p>
+    <pre><code class="javascript">this.addEventListener('install', function(event) {
+    console.log("Service worker installed!");
+});
+
+this.addEventListener('activate', function(event) {
+    console.log("Service worker activated!");
+});</code> </pre>
+
+</section>
+
+
+<section data-markdown >
+    <script type="text/template">
+    ![](img/DevTools.png)
+    </script>
+</section>
+
+
+<section >
+    <h3>Network Intercepting</h3>
+    <p>In the page</p>
+    <pre><code class="html" data-noescape="">&lt;html>
+    &lt;body>
+        ^^You should get a different response when you refresh^^
+        &lt;script>
+            navigator.serviceWorker.register('worker.js').then(function(reg) {
+                console.log("Registered!");
+            }).catch(function(error) {
+                console.log("Error", error);
+            });
+        &lt;/script>
+    &lt;/body>
+&lt;/html> </code> </pre>
+</section>
+
+<section >
+    <p>In worker.js</p>
+    <pre><code class="javascript" data-noescape="">this.addEventListener(^^'fetch'^^, function(event) {
+    console.log(event.request);
+    event.respondWith(^^new Response("Hello world!")^^);
+}); </code> </pre>
+</section>
+
+<section data-markdown >
+    <script type="text/template">
+        ![](img/intercep1.png)
+    </script>
+</section>
+
+<section class="fragment">
+    <img src="img/intercep2.png">
+    <ul class="fragment">shift+refresh loads the current page without the ServiceWorker</ul>
+</section>
+
+<section >
+    <h3>Caching API</h3>
+    <p>Service Worker comes with a caching API.</p>
+
+    <p>In worker.js</p>
+    <pre><code class="javascript" data-noescape="">this.addEventListener('install', function(event) {
+    event.waitUntil(
+        ^^caches.create^^('myapp-static-v1').then(function(cache) {
+            return cache.addAll([
+                '/',
+                '/styles/all.css',
+                '/styles/imgs/bg.png',
+                '/scripts/all.js'
+            ]);
+        })
+    );
+});
+
+this.addEventListener('fetch', function(event) {
+    event.respondWith(
+        ^^caches.match^^(event.request).then(function(response) {
+            return ^^response^^ || ^^fetch(event.request)^^;
+        })
+    );
+}); </code></pre>
+</section>
+
+<section data-markdown >
+    <script type="text/template">
+        ### Service Worker Lifecycle
+        * Download
+        * Install: create caches
+        * Activate: handle management of old caches
+    </script>
+</section>
+
+<section >
+        <h3>Push Notifications</h3>
+    <ul>
+        <li> The app requests permission to send push messages</li>
+        <li> If permission is granted, a pushSubscription is given to the app</li>
+        <li> The app will then send the pushSubscription to its own server</li>
+        <li> The server will then send some data and the pushSubscriptionID to the push notification service, e.g.,
+        Google Cloud Messaging, Apple Push Notification Service</li>
+        <li> The push service will then use the pushSubscriptionID to send the data to the correct device and app</li>
+    </ul>
+</section>
+
+
+<section  >
+    <p>In the page</p>
+    <pre><code class="javascript" data-noescape="">navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
+    serviceWorkerRegistration.^^push.register^^()
+        .then(function(pushSubscription) {
+        sendSubscription(^^pushSubscription^^);
+    })
+    .catch(function(error) {
+        console.error('Unable to register for push', error);
+    });
+});</code> </pre>
+</section>
+
+<section >
+    <h3>From Push Provider to the Device</h3>
+    <p>In worker.js</p>
+    <pre><code class="javascript" data-noescape="">this.addEventListener(^1^'push'^^, function(event) {
+    console.log('Push Event Received');
+    event.waitUntil(
+        ^3^updatedCaches().then(function()^^ {
+            return ^2^new Notification^^('New message!', {
+               body: 'here is a new message',
+            });
+        })
+    );
+});</code></pre> </section>
+
+
+
+<section data-markdown >
+    <script type="text/template">
+    ![](img/Push.png)
+    </script>
+</section>
+
+<section >
+        <h3> Background Sync </h3>
+        <p>Register for sync event to do something when the user has a connection</p>
+
+        <p>In the page</p>
+        <pre><code class="javascript" data-noescape="">^^sendEmail^^(data).catch(function() {
+    return ^^saveToOutbox(data)^^.then(function() {
+        return navigator.serviceWorker.ready;
+    }).then(function(serviceWorkerRegistration) {
+        return serviceWorkerRegistration.^^sync.register^^(^^'empty-outbox'^^);
+    });
+}); </code> </pre>
+</section>
+
+<section >
+    <h3>Background Sync</h3>
+    <p>In worker.js</p>
+    <pre><code class="javascript" data-noescape="">this.addEventListener(^^'sync'^^, function(event) {
+    if (event.id == 'empty-outbox') {
+        event.waitUntil(
+            ^^getOutbox()^^.then(function(emails) {
+                return Promise.all(
+                    emails.map(function(email) {
+                        return ^^sendEmail^^(email);
+                    })
+                );
+            })
+        );
+    }
+});</code></pre>
+</section>
+
+<section >
+    <h3>Periodic Sync </h3>
+
+    <p>In the page</p>
+        <pre><code class="javascript" data-noescape="">navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
+    serviceWorkerRegistration.^^sync.register^^('send-emails', {
+        ^^minInterval^^: 60 * 60 * 1000
+    });
+}); </code> </pre>
+</section>
+
+
+<section data-markdown >
+    <script type="text/template">
+        * Shake gestures
+        * Caching
+        * Push notifications
+        * Background syncing
+
+        ## Your web app can do all of that!
+
+    </script>
+</section>
+    
+
+<section>
+    <h1>Thank you!</h1>
+
+<br>
+    <div>
+        <!--img style="height: 200px" src="img/test/FranziskaHinkelmann.jpg" -->
+    </div>
+    <p style="text-align:center">
+        <a href="mailto:franziska.hinkelmann@tngtech.com">franziska.hinkelmann@tngtech.com</a><br>
+        <a href="http://www.twitter.com/fhinkel">@fhinkel</a>
+    </p>
+    <a href="http://www.tngtech.com"><img class="logo" src="img/tng.svg"></a>
+</section>
+
+</body>
+</html>
